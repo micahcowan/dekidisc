@@ -1,0 +1,36 @@
+{
+  "name": "dekidisc",
+  "version": "1.0.0",
+  "description": "A boomerang-bullet 2D shooter game",
+  "main": "build/dekidisc.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/micahcowan/dekidisc.git"
+  },
+  "keywords": [
+    "game",
+    "2d",
+    "HTML5",
+    "canvas",
+    "context2d",
+    "shooter",
+    "boomerang"
+  ],
+  "author": {
+    "name": "Micah J Cowan",
+    "email": "micah@addictivecode.org",
+    "url": "http://micah.cowan.name/"
+  },
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/micahcowan/dekidisc/issues"
+  },
+  "homepage": "https://github.com/micahcowan/dekidisc#readme",
+  "devDependencies": {
+    "browserify": "^13.0.1",
+    "typescript": "^1.8.10"
+  }
+}
