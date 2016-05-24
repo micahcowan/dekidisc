@@ -1,6 +1,14 @@
 import * as ion from "ionsible";
+import * as sprite from "./sprite"
 
-export class BackgroundClass implements ion.IDrawable {
+function shadow(c : CanvasRenderingContext2D) {
+    c.shadowColor = 'rgba(0,0,0,0.3)';
+    c.shadowOffsetX = 5;
+    c.shadowOffsetY = 5;
+    c.shadowBlur = 4.2;
+}
+
+class BackgroundClass implements ion.IDrawable {
     fillStyle : string = '#EEE';
     gridSize  : number = 42;
     lineWidth : number = 1;
@@ -41,3 +49,67 @@ export class BackgroundClass implements ion.IDrawable {
 }
 export let Background : ion.IDrawableFactory
         = (game : ion.Game, sprite : ion.Sprite) => new BackgroundClass(game, sprite);
+
+class PlayerClass implements ion.IDrawable {
+    draw(c : CanvasRenderingContext2D) {
+        let p = this.sprite as sprite.Player; // XXX is this how I want to do this?
+        let r = p.size;
+
+        /* XXX
+        if (!p.bullet.isAtRest)
+            p.bullet.draw(s);
+        */
+
+        c.beginPath();
+        let x0 = 0;
+        let y0 = - r * 4/3;
+        let x1 = + r * Math.sin(2/3 * Math.PI);
+        let y1 = - r * Math.cos(2/3 * Math.PI);
+        let x2 = + r * Math.sin(4/3 * Math.PI);
+        let y2 = - r * Math.cos(4/3 * Math.PI);
+        /* These two should be handled by the ion.Game graphics handler: */
+        /* c.translate(p.x.as( U.pixel ), p.y.as( U.pixel ));
+        c.rotate(p.rot.as( U.radian )); */
+        c.moveTo(x0, y0);
+        c.bezierCurveTo(x0, y0, x1, y1-r*3/4, x1, y1+r/3);
+        c.bezierCurveTo(x1, y1, x2, y2, x2, y2+r/3);
+        c.bezierCurveTo(x2, y2-r*3/4, x0, y0, x0, y0);
+        c.strokeStyle = "black";
+        c.lineWidth = 2;
+        c.lineJoin = "miter";
+        c.fillStyle = "red";
+        if (p.hitPoints == 0) {
+            /*
+            var percent = (GG.state.gameTime - p.killedTime) /
+                                GA.BADDIE_DEATH_TIME;
+            var alpha = 1 - percent;
+            c.fillStyle = 'rgba(128,0,0,' + alpha + ')';
+            c.save();
+            c.fill();
+            c.restore();
+            */
+        }
+        /*
+        else if (p.bullet.isAtRest) {
+        */
+        else {
+            c.save();
+            shadow(c);
+            c.fill();
+            c.restore();
+            c.stroke();
+        }
+        /*
+        else {
+            GA.art.shadow();
+            c.stroke();
+        }
+        */
+    }
+
+    constructor(private game : ion.Game, private sprite : ion.Sprite) {
+    }
+}
+
+export let Player : ion.IDrawableFactory
+        = (game : ion.Game, sprite : ion.Sprite) => new PlayerClass(game, sprite);
