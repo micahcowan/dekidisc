@@ -3,8 +3,9 @@
 PATH := ./node_modules/.bin:$(PATH)
 
 SRC=src/*.ts
-TSC = tsc
+TSC = ./node_modules/.bin/tsc
 TSCOPT = 
+BIFY = ./node_modules/.bin/browserify
 
 all: browserify build/index.html build/sounds
 
@@ -28,7 +29,7 @@ distclean: clean
 
 browserify: build/dekidisc-all.js
 build/dekidisc-all.js: build/dekidisc.js
-	browserify -o $@ $<
+	$(BIFY) -o $@ $<
 
 which:
 	@which $(TSC)
