@@ -17,14 +17,14 @@ export class Player extends ion.Sprite {
 
     behaviors : ion.IBehaviorFactory[] = [
         ion.b.Momentum
-        /*
-      , Bh.rotateKeys(
-            {
+      , ion.b.RotateKeys(
+            Math.PI     // rad/s
+          , {
                 clock:   [ 'd', 'ArrowRight' ]
               , counter: [ 'a', 'ArrowLeft' ]
             }
-          , U.radians( Math.PI ).per.second
         )
+        /*
       , Bh.thrustKeys(
             {
                 forward: [ 'w', 'ArrowUp' ]
