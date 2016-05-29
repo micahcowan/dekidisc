@@ -39,8 +39,8 @@ export class Player extends ion.Sprite {
           , ion.util.spriteBounce
         )
       , ion.b.Friction(100) // px/s^2
-        /*
       , ion.b.SpeedLimited(240) // px/s
+        /*
       , GABh.playerBullet({
             trigger:        'Space'
 
