@@ -8,4 +8,6 @@ game.setScene([
   , new sprite.Player(game)
 ])
 
+game.drawBB = true;
+
 game.start();

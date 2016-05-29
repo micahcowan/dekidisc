@@ -7,13 +7,26 @@ export class Background extends ion.Sprite {
 
 
 export class Player extends ion.Sprite {
-    size = 12;
+    size;
     hitPoints = 3;
     rotation = Math.PI * 3/2;
 
     constructor(g : ion.Game) {
         super(g);
         this.pos = g.center;
+        let r = this.size = 12;
+        let pi = Math.PI;
+        let s = Math.sin.bind(Math);
+        let c = Math.cos.bind(Math);
+        this.body = new ion.body.Polygon(this,
+        // Specify the points in terms of what they are in art.ts,
+        // Which assume a rotation of 0 is straight up. Then rotate it
+        // 90 degrees to the right, to match the reality.
+        [
+            ion.point(0, -r * 4/3)
+          , ion.point(r * s(2/3 * pi), -r * c(2/3 * pi) + r/3)
+          , ion.point(r * s(4/3 * pi), -r * c(4/3 * pi) + r/3)
+        ].map(p => p.rotated(pi/2)));
     }
 
     behaviors : ion.IBehaviorFactory[] = [

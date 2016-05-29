@@ -72,9 +72,6 @@ class PlayerClass implements ion.IDrawable {
         let y1 = - r * Math.cos(2/3 * Math.PI);
         let x2 = + r * Math.sin(4/3 * Math.PI);
         let y2 = - r * Math.cos(4/3 * Math.PI);
-        /* These two should be handled by the ion.Game graphics handler: */
-        /* c.translate(p.x.as( U.pixel ), p.y.as( U.pixel ));
-        c.rotate(p.rot.as( U.radian )); */
         c.moveTo(x0, y0);
         c.bezierCurveTo(x0, y0, x1, y1-r*3/4, x1, y1+r/3);
         c.bezierCurveTo(x1, y1, x2, y2, x2, y2+r/3);
@@ -104,6 +101,17 @@ class PlayerClass implements ion.IDrawable {
             c.restore();
             c.stroke();
         }
+
+        // Undo rotation from game drawing routine, and from our own.
+        c.rotate(-p.rotation - Math.PI/2);
+        // Draw points of body.
+        let body = p.body as ion.body.Polygon;
+        c.fillStyle = 'cyan';
+        body.getRotatedPoints().forEach(pt => {
+            c.beginPath();
+            c.arc(pt.x, pt.y, 2, 0, Math.PI*2);
+            c.fill();
+        });
     }
 
     constructor(private game : ion.Game, private sprite : ion.Sprite) {
