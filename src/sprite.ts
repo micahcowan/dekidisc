@@ -34,7 +34,13 @@ export class Player extends ion.Sprite {
               , right:   'e'
             }
         )
+      , ion.b.Bounded(
+            ion.util.gameRect
+          , ion.util.spriteBounce
+        )
+      , ion.b.Friction(100) // px/s^2
         /*
+      , ion.b.SpeedLimited(240) // px/s
       , GABh.playerBullet({
             trigger:        'Space'
 
@@ -45,14 +51,6 @@ export class Player extends ion.Sprite {
               , GA.soundPlayer('knock')
             ]
         })
-      , Bh.friction(  U.pixels( 100 ).per.second.per.second  )
-      , Bh.speedLimited( U.pixels( 240 ).per.second )
-      , Bh.bouncingBounds(
-              U.pixels( 0 ), U.pixels( 0 ),
-              GA.game.width, GA.game.height,
-              // Play "clink" when we bounce off a wall
-              GA.maybeTeleportGate
-        )
         */
     ];
 
