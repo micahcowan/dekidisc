@@ -17,8 +17,7 @@ export class Player extends ion.Sprite {
     }
 
     behaviors : ion.IBehaviorFactory[] = [
-        ion.b.Momentum
-      , ion.b.RotateKeys(
+        ion.b.RotateKeys(
             Math.PI     // rad/s
           , {
                 clock:   [ 'd', 'ArrowRight' ]
@@ -26,20 +25,22 @@ export class Player extends ion.Sprite {
             }
         )
       , ion.b.ThrustKeys(
-            300 // px/s^2
-          , {
+            {
                 forward: [ 'w', 'ArrowUp' ]
               , back:    [ 's', 'ArrowDown' ]
               , left:    'q'
               , right:   'e'
             }
         )
+      , ion.b.SpeedRamp(
+            240 // max speed
+          , 1.2 // seconds required to reach max speed
+          , 2.4 // seconds required to reach full stop under no accel
+        )
       , ion.b.Bounded(
             ion.util.gameRect
           , ion.util.spriteBounce
         )
-      , ion.b.Friction(100) // px/s^2
-      , ion.b.SpeedLimited(240) // px/s
         /*
       , GABh.playerBullet({
             trigger:        'Space'
