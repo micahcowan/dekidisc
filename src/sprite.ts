@@ -9,6 +9,7 @@ export class Background extends ion.Sprite {
 export class Player extends ion.Sprite {
     size = 12;
     hitPoints = 3;
+    rotation = Math.PI * 3/2;
 
     constructor(g : ion.Game) {
         super(g);
@@ -24,16 +25,16 @@ export class Player extends ion.Sprite {
               , counter: [ 'a', 'ArrowLeft' ]
             }
         )
-        /*
-      , Bh.thrustKeys(
-            {
+      , ion.b.ThrustKeys(
+            300 // px/s^2
+          , {
                 forward: [ 'w', 'ArrowUp' ]
               , back:    [ 's', 'ArrowDown' ]
               , left:    'q'
               , right:   'e'
             }
-          , U.pixels( 300 ).per.second.per.second
         )
+        /*
       , GABh.playerBullet({
             trigger:        'Space'
 

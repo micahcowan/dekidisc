@@ -60,6 +60,11 @@ class PlayerClass implements ion.IDrawable {
             p.bullet.draw(s);
         */
 
+        // The code below draws as if rotation 0 is straight upright,
+        // but it's actually to the right. So we rotate 90 degrees to
+        // correct that.
+        c.rotate( Math.PI/2 );
+
         c.beginPath();
         let x0 = 0;
         let y0 = - r * 4/3;
@@ -99,12 +104,6 @@ class PlayerClass implements ion.IDrawable {
             c.restore();
             c.stroke();
         }
-        /*
-        else {
-            GA.art.shadow();
-            c.stroke();
-        }
-        */
     }
 
     constructor(private game : ion.Game, private sprite : ion.Sprite) {
