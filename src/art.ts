@@ -8,7 +8,7 @@ function shadow(c : CanvasRenderingContext2D) {
     c.shadowBlur = 4.2;
 }
 
-class BackgroundClass implements ion.IDrawable {
+export class Background implements ion.IDrawable {
     fillStyle : string = '#EEE';
     gridSize  : number = 42;
     lineWidth : number = 1;
@@ -44,16 +44,12 @@ class BackgroundClass implements ion.IDrawable {
             c.stroke();
         }
     }
-
-    constructor(private game : ion.Game, private sprite : ion.Sprite) {}
 }
-export let Background : ion.IDrawableFactory
-        = (game : ion.Game, sprite : ion.Sprite) => new BackgroundClass(game, sprite);
 
-class PlayerClass implements ion.IDrawable {
+export class Player implements ion.IDrawable {
     draw(c : CanvasRenderingContext2D) {
-        let p = this.sprite as sprite.Player; // XXX is this how I want to do this?
-        let r = p.size;
+        //let p = this.sprite as sprite.Player; // XXX is this how I want to do this?
+        let r = this.size;
 
         /* XXX
         if (!p.bullet.isAtRest)
@@ -80,7 +76,7 @@ class PlayerClass implements ion.IDrawable {
         c.lineWidth = 2;
         c.lineJoin = "miter";
         c.fillStyle = "red";
-        if (p.hitPoints == 0) {
+        if (false /* p.hitPoints == 0 */) {
             /*
             var percent = (GG.state.gameTime - p.killedTime) /
                                 GA.BADDIE_DEATH_TIME;
@@ -101,22 +97,8 @@ class PlayerClass implements ion.IDrawable {
             c.restore();
             c.stroke();
         }
-
-        // Undo rotation from game drawing routine, and from our own.
-        c.rotate(-p.rotation - Math.PI/2);
-        // Draw points of body.
-        let body = p.body as ion.body.Polygon;
-        c.fillStyle = 'cyan';
-        body.getRotatedPoints().forEach(pt => {
-            c.beginPath();
-            c.arc(pt.x, pt.y, 2, 0, Math.PI*2);
-            c.fill();
-        });
     }
 
-    constructor(private game : ion.Game, private sprite : ion.Sprite) {
+    constructor(private sprite : ion.Sprite, private size : number) {
     }
 }
-
-export let Player : ion.IDrawableFactory
-        = (game : ion.Game, sprite : ion.Sprite) => new PlayerClass(game, sprite);

@@ -2,9 +2,8 @@ import * as ion from "ionsible";
 import * as art from "./art";
 
 export class Background extends ion.Sprite {
-    drawer : ion.IDrawableFactory = art.Background;
+    drawer : ion.IDrawable = new art.Background;
 }
-
 
 export class Player extends ion.Sprite {
     size;
@@ -27,6 +26,8 @@ export class Player extends ion.Sprite {
           , ion.point(r * s(2/3 * pi), -r * c(2/3 * pi) + r/3)
           , ion.point(r * s(4/3 * pi), -r * c(4/3 * pi) + r/3)
         ].map(p => p.rotated(pi/2)));
+
+        this.drawer = new art.Player(this, this.size);
     }
 
     behaviors : ion.IBehaviorFactory[] = [
@@ -67,6 +68,4 @@ export class Player extends ion.Sprite {
         })
         */
     ];
-
-    drawer : ion.IDrawableFactory = art.Player;
 };
