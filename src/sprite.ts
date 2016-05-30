@@ -5,6 +5,22 @@ export class Background extends ion.Sprite {
     drawer : ion.IDrawable = new art.Background;
 }
 
+function getPlayerBody(p : Player, r : number) : ion.IBody {
+    let pi = Math.PI;
+    let s = Math.sin.bind(Math);
+    let c = Math.cos.bind(Math);
+    return new ion.body.Polygon(p,
+        // Specify the points in terms of what they are in art.ts,
+        // Which assume a rotation of 0 is straight up. Then rotate it
+        // 90 degrees to the right, to match the reality.
+        [
+            ion.point(0, -r * 4/3)
+          , ion.point(r * s(2/3 * pi), -r * c(2/3 * pi) + r/3)
+          , ion.point(r * s(4/3 * pi), -r * c(4/3 * pi) + r/3)
+        ].map(p => p.rotated(pi/2))
+    );
+}
+
 export class Player extends ion.Sprite {
     size;
     hitPoints = 3;
@@ -13,20 +29,9 @@ export class Player extends ion.Sprite {
     constructor(g : ion.Game) {
         super(g);
         this.pos = g.center;
-        let r = this.size = 12;
-        let pi = Math.PI;
-        let s = Math.sin.bind(Math);
-        let c = Math.cos.bind(Math);
-        this.body = new ion.body.Polygon(this,
-        // Specify the points in terms of what they are in art.ts,
-        // Which assume a rotation of 0 is straight up. Then rotate it
-        // 90 degrees to the right, to match the reality.
-        [
-            ion.point(0, -r * 4/3)
-          , ion.point(r * s(2/3 * pi), -r * c(2/3 * pi) + r/3)
-          , ion.point(r * s(4/3 * pi), -r * c(4/3 * pi) + r/3)
-        ].map(p => p.rotated(pi/2)));
+        this.size = 12;
 
+        this.body = getPlayerBody(this, this.size);
         this.drawer = new art.Player(this, this.size);
     }
 
