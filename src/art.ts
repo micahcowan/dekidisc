@@ -48,13 +48,8 @@ export class Background implements ion.IDrawable {
 
 export class Player implements ion.IDrawable {
     draw(c : CanvasRenderingContext2D) {
-        //let p = this.sprite as sprite.Player; // XXX is this how I want to do this?
+        let p = this.sprite as sprite.Player;
         let r = this.size;
-
-        /* XXX
-        if (!p.bullet.isAtRest)
-            p.bullet.draw(s);
-        */
 
         // The code below draws as if rotation 0 is straight upright,
         // but it's actually to the right. So we rotate 90 degrees to
@@ -87,14 +82,16 @@ export class Player implements ion.IDrawable {
             c.restore();
             */
         }
-        /*
         else if (p.bullet.isAtRest) {
-        */
-        else {
             c.save();
             shadow(c);
-            c.fill();
+            if (p.bullet.isAtRest)
+                c.fill();
             c.restore();
+            c.stroke();
+        }
+        else {
+            shadow(c);
             c.stroke();
         }
     }
@@ -116,7 +113,7 @@ export class Bullet implements ion.IDrawable {
         var r = b.firedRadius; // default bullet radius.
         var maxR = b.recallRadius; // max bullet radius.
 
-        if (timeSinceFire - b.firingTime.s) {
+        if (timeSinceFire < b.firingTime.s) {
             // slide is percentage-complete of transition between min
             // and max radius (at firing, or at recall)
             var slide = timeSinceFire / b.firingTime.s;

@@ -1,5 +1,6 @@
 import * as ion from "ionsible";
 import * as art from "./art";
+import * as deki from "./behavior";
 
 export class Background extends ion.Sprite {
     drawer : ion.IDrawable = new art.Background;
@@ -98,7 +99,7 @@ export class Bullet extends ion.Sprite {
 
     drawer = new art.Bullet(this);
 
-    constructor(game : ion.Game, private player : ion.Sprite) {
+    constructor(game : ion.Game, public player : ion.Sprite) {
         super(game);
     }
 
@@ -115,6 +116,11 @@ export class Bullet extends ion.Sprite {
 
     behaviors : ion.IBehaviorFactory[] = [
         ion.b.Momentum
+      , ion.b.Bounded(
+            ion.util.gameRect
+          , bullet => (<Bullet>bullet).recall()
+        )
+      , deki.BulletHoming
     ];
 
     fire() : void {
@@ -130,9 +136,14 @@ export class Bullet extends ion.Sprite {
     }
 
     recall() : void {
-        if (this.isFired)
+        if (this.isFired) {
             this.firedTime = this.game.elapsed;
-        this.state = BulletState.BulletReturning;
+            this.state = BulletState.BulletReturning;
+        }
+    }
+
+    rest() : void {
+        this.state = BulletState.BulletAtRest;
     }
 }
 
