@@ -102,3 +102,46 @@ export class Player implements ion.IDrawable {
     constructor(private sprite : ion.Sprite, private size : number) {
     }
 }
+
+export class Bullet implements ion.IDrawable {
+    private color : string = 'red';
+
+    constructor(private bullet : sprite.Bullet) { }
+
+    draw(c : CanvasRenderingContext2D) {
+        let b = this.bullet;
+        if (b.isAtRest) return;
+
+        var timeSinceFire = b.game.elapsed.s - b.firedTime.s;
+        var r = b.firedRadius; // default bullet radius.
+        var maxR = b.recallRadius; // max bullet radius.
+
+        if (timeSinceFire - b.firingTime.s) {
+            // slide is percentage-complete of transition between min
+            // and max radius (at firing, or at recall)
+            var slide = timeSinceFire / b.firingTime.s;
+            if (b.isFired) {
+                slide = 1.0 - slide;
+            }
+
+            r += (maxR - r) * slide;
+        }
+        else if (!b.isFired) {
+            r = maxR;
+        }
+
+        c.beginPath();
+        c.fillStyle = this.color;
+        c.arc(
+            0
+          , 0
+          , r
+
+          , 0, 2 * Math.PI // IOW, draw a full-circle arc
+        );
+        c.save();
+        shadow(c);
+        c.fill();
+        c.restore();
+    };
+}

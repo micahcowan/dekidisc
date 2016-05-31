@@ -21,10 +21,14 @@ function getPlayerBody(p : Player, r : number) : ion.IBody {
     );
 }
 
-export class Player extends ion.Sprite {
+export class Player extends ion.Sprite implements ion.ISpriteContainer {
     size;
     hitPoints = 3;
     rotation = Math.PI * 3/2;
+    bullet = new Bullet(this.game, this);
+
+    /** Tracks bullet sprites. */
+    subsprites : ion.ISprite[] = [ this.bullet ];
 
     constructor(g : ion.Game) {
         super(g);
@@ -60,6 +64,10 @@ export class Player extends ion.Sprite {
             ion.util.gameRect
           , ion.util.spriteBounce
         )
+      , ion.b.OnKey({
+            keyUp: 'Space'
+          , fire: fireOrRecallBullet
+      })
         /*
       , GABh.playerBullet({
             trigger:        'Space'
@@ -73,4 +81,70 @@ export class Player extends ion.Sprite {
         })
         */
     ];
-};
+}
+
+enum BulletState {
+    BulletAtRest
+  , BulletFired
+  , BulletReturning
+}
+export class Bullet extends ion.Sprite {
+    autoRotate = false; // rotating a circle does no one any good.
+    speed = 300; // px/s^2
+    firedTime : ion.Duration;
+    firedRadius = 4;
+    recallRadius = 7;
+    firingTime : ion.Duration = new ion.Duration( 1/3 * 1000 ); // ms
+
+    drawer = new art.Bullet(this);
+
+    constructor(game : ion.Game, private player : ion.Sprite) {
+        super(game);
+    }
+
+    private state : BulletState = BulletState.BulletAtRest;
+    get isAtRest() : boolean {
+        return this.state == BulletState.BulletAtRest;
+    }
+    get isFired() : boolean {
+        return this.state == BulletState.BulletFired;
+    }
+    get isReturning() : boolean {
+        return this.state == BulletState.BulletReturning;
+    }
+
+    behaviors : ion.IBehaviorFactory[] = [
+        ion.b.Momentum
+    ];
+
+    fire() : void {
+        let p = this.player;
+        this.pos = p.pos;
+        let rot = this.rotation = p.rotation;
+        this.vel = ion.veloc(
+            this.speed * Math.cos(rot)
+          , this.speed * Math.sin(rot)
+        );
+        this.state = BulletState.BulletFired;
+        this.firedTime = this.game.elapsed;
+    }
+
+    recall() : void {
+        if (this.isFired)
+            this.firedTime = this.game.elapsed;
+        this.state = BulletState.BulletReturning;
+    }
+}
+
+function fireOrRecallBullet(player : Player) {
+    let bullet = player.bullet;
+
+    if (bullet.isAtRest) {
+        // Fire bullet (it figures out how to register with the player).
+        bullet.fire();
+    }
+    else if (!bullet.isReturning) {
+        bullet.recall();
+    }
+    // else there's a bullet, and it's already recalling. Do nothing.
+}
