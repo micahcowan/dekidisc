@@ -31,6 +31,6 @@
   "homepage": "https://github.com/micahcowan/dekidisc#readme",
   "devDependencies": {
     "browserify": "^13.0.1",
-    "typescript": "^1.8.10"
+    "typescript": "^2.1.4"
   }
 }

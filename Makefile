@@ -4,14 +4,14 @@ PATH := ./node_modules/.bin:$(PATH)
 
 SRC=src/*.ts
 TSC = ./node_modules/.bin/tsc
-TSCOPT = 
-BIFY = ./node_modules/.bin/browserify
+TSCOPT = -d -t ES5 --sourceMap
+BIFY = ./node_modules/.bin/browserify -d
 
 all: browserify build/index.html build/sounds
 
 build: build/dekidisc.js
 build/dekidisc.js: $(SRC)
-	$(TSC) $(TSCOPT) -d -t ES5 --rootDir src --outDir build $^
+	$(TSC) $(TSCOPT) --rootDir src --outDir build $^
 
 build/index.html:
 	ln -s ../src/index.html $@
@@ -19,7 +19,7 @@ build/sounds:
 	ln -s ../sounds $@
 
 watch: $(SRC)
-	$(TSC) $(TSCOPT) -w -d -t ES5 --rootDir src --outDir build $^ || true
+	$(TSC) $(TSCOPT) -w --rootDir src --outDir build $^ || true
 
 clean:
 	rm -fr build
