@@ -23,7 +23,7 @@ function getPlayerBody(p : Player, r : number) : ion.IBody {
 }
 
 export class Player extends ion.Sprite implements ion.ISpriteContainer {
-    size;
+    size : number;
     hitPoints = 3;
     rotation = Math.PI * 3/2;
     bullet = new Bullet(this.game, this);
