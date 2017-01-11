@@ -4,7 +4,7 @@ PATH := ./node_modules/.bin:$(PATH)
 
 SRC=src/*.ts
 TSC = ./node_modules/.bin/tsc
-TSCOPT = -d -t ES5 --sourceMap --noImplicitAny
+TSCOPT = -d -t ES5 --sourceMap --noImplicitAny --strictNullChecks
 BIFY = ./node_modules/.bin/browserify -d
 
 all: browserify build/index.html build/sounds
